@@ -14,6 +14,7 @@
 - Section
 - MainService
 - main
+-------
 
 ### Objects to create
 - Library
@@ -25,6 +26,8 @@
 - LibraryCard
 - Rent
 - Section
+
+-------
 
 ### Actions/Interogations
 
