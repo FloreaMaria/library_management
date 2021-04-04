@@ -1,5 +1,3 @@
-# library_management
-
 ## Library Management Project
 
 ### Classes
@@ -7,10 +5,10 @@
 - Library
 - Person
 - Librarian
---> Author
---> Client
+- Author
+- Client
 - Book
---> BookItem
+- BookItem
 - LibraryCard
 - Rent
 - Section
