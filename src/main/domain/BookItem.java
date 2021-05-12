@@ -5,6 +5,9 @@ public class BookItem extends Book{
     private int bookItemId;
     private String status; // available, borrowed
 
+    public BookItem(){
+
+    }
     public BookItem(int bookItemId, String status) {
         this.bookItemId = bookItemId;
         this.status = status;

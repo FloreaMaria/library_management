@@ -19,7 +19,6 @@ public class MainService {
     private static final Set<Section> sections =  new HashSet<Section>();
     private static final Library library = new Library();
 
-
     public MainService(){
 
         addAuthor();
@@ -357,9 +356,9 @@ public class MainService {
 
         }
 
-        Librarian librarian = new Librarian(doc[0], doc[1], librarians.size()+1, libSections);
-        librarians.add(librarian);
-        System.out.println("Librarian added successfully");
+//        Librarian librarian = new Librarian(doc[0], doc[1], librarians.size()+1, libSections);
+//        librarians.add(librarian);
+//        System.out.println("Librarian added successfully");
     }
 
     public double collectPenaltyFines(){

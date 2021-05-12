@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 
-public class Rent {
+public class Rent extends Entity<Integer>{
 
     private int rentId;
     private double penalty;

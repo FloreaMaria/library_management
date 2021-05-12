@@ -1,26 +1,26 @@
 package main.domain;
 
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Set;
 
 public class Librarian extends Person{
 
     private int librarianId;
-    private Set<Section> sections;
+    LocalDate hireDate;
 
     public Librarian(){
-
     }
 
-    public Librarian(int librarianId, Set<Section> sections) {
+    public Librarian(int librarianId) {
         this.librarianId = librarianId;
-        this.sections = sections;
+
     }
 
-    public Librarian(String firstName, String lastName, int librarianId, Set<Section> sections) {
+    public Librarian(String firstName, String lastName, int librarianId) {
         super(firstName, lastName);
         this.librarianId = librarianId;
-        this.sections = sections;
+
     }
 
     public int getLibrarianId() {
@@ -31,12 +31,12 @@ public class Librarian extends Person{
         this.librarianId = librarianId;
     }
 
-    public Set<Section> getSections() {
-        return sections;
+    public LocalDate getHireDate() {
+        return hireDate;
     }
 
-    public void setSections(Set<Section> sections) {
-        this.sections = sections;
+    public void setHireDate(LocalDate hireDate) {
+        this.hireDate = hireDate;
     }
 
     @Override
@@ -45,7 +45,6 @@ public class Librarian extends Person{
                 "First name = " + getFirstName() +
                 ", Last name = " + getLastName() +
                 ", librarianId=" + librarianId +
-                ", sections=" + sections +
                 '}';
     }
 }

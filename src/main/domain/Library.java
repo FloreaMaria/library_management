@@ -3,8 +3,9 @@ package main.domain;
 import java.util.List;
 import java.util.Set;
 
-public class Library {
+public class Library extends Entity<Integer> {
 
+    private int libraryId;
     private String libraryName, libraryAddress;
     private List<BookItem> books;
     private Set<Librarian> librarianSet;
@@ -60,5 +61,13 @@ public class Library {
 
     public void setSectionSet(Set<Section> sectionSet) {
         this.sectionSet = sectionSet;
+    }
+
+    public int getLibraryId() {
+        return libraryId;
+    }
+
+    public void setLibraryId(int libraryId) {
+        this.libraryId = libraryId;
     }
 }

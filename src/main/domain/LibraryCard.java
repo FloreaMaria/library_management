@@ -2,7 +2,7 @@ package main.domain;
 
 import java.time.LocalDate;
 
-public class LibraryCard {
+public class LibraryCard extends Entity<Integer>{
 
     private int cardId;
     private LocalDate releaseDate, expireDate;

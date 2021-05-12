@@ -1,0 +1,4 @@
+clientId,firstName,lastName,address,libraryCardId,rentedBooksIds
+1,Maria,Florea,Bucuresti,1,1;2;3
+2,Cosmin,Dascalu,Cluj-Napoca,2,1;3
+3,Tibi,Maxim,Munteni,1,1;2

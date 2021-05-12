@@ -1,6 +1,6 @@
 package main.domain;
 
-public abstract class Person {
+public abstract class Person extends Entity<Integer> {
 
     private String firstName, lastName;
 

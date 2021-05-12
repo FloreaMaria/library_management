@@ -2,7 +2,7 @@ package main.domain;
 
 import java.util.Comparator;
 
-public class Book{
+public class Book extends Entity<Integer>{
 
     private int bookId, pages, length, width, releaseYear;
     private double price;
