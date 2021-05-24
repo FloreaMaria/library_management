@@ -1,8 +1,8 @@
-package main.domain;
+package domain;
 
 import java.time.LocalDate;
 
-public class LibraryCard extends Entity<Integer>{
+public class LibraryCard extends Entity<Integer> {
 
     private static int cardId = 0;
     private LocalDate releaseDate, expireDate;

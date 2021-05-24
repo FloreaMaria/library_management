@@ -1,8 +1,8 @@
-package main.domain;
+package domain;
 
 import java.util.Comparator;
 
-public class Book extends Entity<Integer>{
+public class Book extends Entity<Integer> {
 
     private static int bookId = 0;
     private int pages, length, width, releaseYear;
@@ -154,7 +154,7 @@ public class Book extends Entity<Integer>{
                 ", category='" + category + '\'' +
                 ", description='" + description + '\'' +
                 ", subject='" + subject + '\'' +
-                ", author=" + author +
+                ", author=" + author.getFirstName() +
                 '}';
     }
 

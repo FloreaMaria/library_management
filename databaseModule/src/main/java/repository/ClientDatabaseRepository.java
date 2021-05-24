@@ -1,0 +1,135 @@
+package repository;
+
+import domain.*;
+
+import java.sql.*;
+import java.time.LocalDate;
+import java.util.HashMap;
+
+public class ClientDatabaseRepository implements Repository<Integer, Client>{
+    private static final String DATABASE_PATH = "jdbc:postgresql://localhost:5432/my_database";
+    private static final String USER = "postgres";
+    private static final String PASS = "admin";
+    LibraryCardDatabaseRepository libraryCardDatabaseRepository = new LibraryCardDatabaseRepository();
+    RentDatabaseRepository rentDatabaseRepository = new RentDatabaseRepository();
+
+    @Override
+    public Client findOne(Integer integer) {
+        String query = "SELECT * FROM clients WHERE id = ?";
+        try(Connection connection = DriverManager.getConnection(DATABASE_PATH, USER, PASS)){
+            try(PreparedStatement statement = connection.prepareStatement(query)){
+                statement.setInt(1, integer);
+                try(ResultSet set = statement.executeQuery()){
+                    if(set.next()){
+                        return map(set);
+                    }
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public HashMap<Integer, Client> findAll() {
+       HashMap<Integer, Client> clientHashMap = new HashMap<>();
+        String query = "SELECT * FROM clients";
+        try(Connection connection = DriverManager.getConnection(DATABASE_PATH, USER, PASS)){
+            try(PreparedStatement statement = connection.prepareStatement(query)){
+                try(ResultSet set = statement.executeQuery()){
+                    while(set.next()){
+                        Client client = map(set);
+                        clientHashMap.put(client.getId(), client);
+                    }
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+       return clientHashMap;
+    }
+
+    @Override
+    public Client save(Client entity) {
+        String query = "INSERT INTO clients (first_name, last_name, address, library_card_id) VALUES (?, ?, ?, ?) RETURNING *";
+        try(Connection connection = DriverManager.getConnection(DATABASE_PATH, USER, PASS)){
+            try(PreparedStatement statement = connection.prepareStatement(query)){
+                statement.setString(1, entity.getFirstName());
+                statement.setString(2, entity.getLastName());
+                statement.setString(3, entity.getAddress());
+                statement.setInt(4, entity.getLibraryCard().getId());
+                try(ResultSet set = statement.executeQuery()){
+                    if(set.next()){
+                        return map(set);
+                    }
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @Override
+    public Client delete(Integer integer) {
+        String query = "DELETE FROM clients WHERE id = ? RETURNING *";
+        try(Connection connection = DriverManager.getConnection(DATABASE_PATH, USER, PASS)){
+            try(PreparedStatement statement = connection.prepareStatement(query)){
+                statement.setInt(1, integer);
+                try(ResultSet set = statement.executeQuery()){
+                    if(set.next()){
+                        return map(set);
+                    }
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public Client update(Client entity) {
+        String query = "UPDATE clients set first_name = ?, last_name = ?, address = ?, library_card_id=? WHERE id = ? RETURNING *";
+        try(Connection connection = DriverManager.getConnection(DATABASE_PATH, USER, PASS)){
+            try(PreparedStatement statement = connection.prepareStatement(query)){
+                statement.setString(1, entity.getFirstName());
+                statement.setString(2, entity.getLastName());
+                statement.setString(3, entity.getAddress());
+                statement.setInt(4, entity.getLibraryCard().getId());
+                statement.setInt(5, entity.getId());
+
+                try(ResultSet set = statement.executeQuery()){
+                    if(set.next()){
+                        return map(set);
+                    }
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
+    private Client map(ResultSet resultSet) throws SQLException {
+
+        String firstName = resultSet.getString("first_name");
+        String lastName = resultSet.getString("last_name");
+        String address = resultSet.getString("address");
+        Integer libraryCardId = resultSet.getInt("library_card_id");
+        int id = resultSet.getInt("id");
+
+        Client client = new Client();
+        client.setAddress(address);
+        client.setId(id);
+        client.setFirstName(firstName);
+        client.setLastName(lastName);
+
+        LibraryCard card = libraryCardDatabaseRepository.findOne(libraryCardId);
+        Rent[] rents = rentDatabaseRepository.findRentsForClient(id).toArray(new Rent[0]);
+        client.setLibraryCard(card);
+        client.setRentedBooks(rents);
+        return client;
+    }
+}

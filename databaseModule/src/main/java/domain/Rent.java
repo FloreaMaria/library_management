@@ -1,14 +1,14 @@
-package main.domain;
+package domain;
 
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 
 
-public class Rent extends Entity<Integer>{
+public class Rent extends Entity<Integer> {
 
     private static int rentId = 0;
     private double penalty;
-    private BookItem bookItem;
+    private BookItem bookItem = new BookItem();
     private LocalDate rentDate, actualReturnDate;
 
     public Rent(){
@@ -16,6 +16,7 @@ public class Rent extends Entity<Integer>{
         this.penalty = 0;
         rentId++;
         this.setId(rentId);
+        this.bookItem.setStatus("Rented");
     }
 
     public double getPenalty() {

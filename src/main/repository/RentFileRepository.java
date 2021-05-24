@@ -32,6 +32,6 @@ public class RentFileRepository extends AbstractFileRepository<Integer, Rent>{
     protected String createEntityAsString(Rent entity) {
         return entity.getId() + "," + entity.getPenalty() + "," +
                 entity.getRentDate() + "," + entity.getActualReturnDate() + "," +
-                entity.getBook().getBookId();
+                entity.getBook().getId();
     }
 }

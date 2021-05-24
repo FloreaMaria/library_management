@@ -31,14 +31,14 @@ public class MainService {
         createNewClient();
         addLibrarian();
         addLibrarian();
-        Section s = new Section("SF", "rank 1");
-        Section s1 = new Section("Fantasy", "rank 2");
-        Section s2 = new Section("Horror", "rank 3");
-        Section s3 = new Section("Romance", "rank 4");
-        sections.add(s);
-        sections.add(s1);
-        sections.add(s2);
-        sections.add(s3);
+//        Section s = new Section("SF", "rank 1");
+//        Section s1 = new Section("Fantasy", "rank 2");
+//        Section s2 = new Section("Horror", "rank 3");
+//        Section s3 = new Section("Romance", "rank 4");
+//        sections.add(s);
+//        sections.add(s1);
+//        sections.add(s2);
+//        sections.add(s3);
         library.setSectionSet(sections);
     }
 
@@ -61,11 +61,10 @@ public class MainService {
             e.printStackTrace();
         }
 
-        newClient.setClientId(clients.size()+1);
         newClient.setFirstName(firstName);
         newClient.setLastName(lastName);
         newClient.setAddress(address);
-        LibraryCard libraryCard = new LibraryCard(cards.size()+1, LocalDate.now(), LocalDate.now().plusDays(365));
+        LibraryCard libraryCard = new LibraryCard();
         newClient.setLibraryCard(libraryCard);
 
         cards.add(libraryCard);
@@ -90,10 +89,10 @@ public class MainService {
     }
     public void showClients(){
         if(clients.size()==0){
-            System.out.println("We have 0 clients rigth now :( ");
+            System.out.println("We have 0 clients right now :( ");
         }
         else{
-            System.out.println("Our clients");
+            System.out.println("Our clients: ");
             for (Client client: clients) {
                 System.out.println(client);
             }
@@ -181,7 +180,6 @@ public class MainService {
         for(Author auth: authors){
             if(auth.getLastName().equals(authLn) && auth.getFirstName().equals(authFn)) {
                 Book newBook = new Book(
-                        books.size() + 1,
                         numberOfPages,
                         length,
                         width,
@@ -204,7 +202,6 @@ public class MainService {
                 Set<Book> auth_books = new HashSet<Book>();
 
                 Book newBook = new Book(
-                        books.size() + 1,
                         numberOfPages,
                         length,
                         width,
@@ -289,7 +286,6 @@ public class MainService {
     else{
         Set<Book> authBooks = new HashSet<Book>();
         Author author = new Author();
-        author.setAuthorId(authors.size()+1);
         author.setFirstName(firstName);
         author.setLastName(lastName);
         author.setBookArray(authBooks);
@@ -318,7 +314,7 @@ public class MainService {
                 }
             }
         }
-        if(ok == 1){
+        if(ok == 0){
             System.out.println("This author has no books");
         }
 
@@ -331,34 +327,13 @@ public class MainService {
         }
     }
     public void addLibrarian(){
-        System.out.println("Enter first name,last name for new librarian");
+        System.out.println("Enter first name, last name for new librarian to be hired");
         Scanner scanner = new Scanner(System.in);
-        String[] doc = scanner.nextLine().split(",");
-        System.out.println("Enter sections for new librarian(eg. SF, Fantasy");
-        String[] sec = scanner.nextLine().split(",");
+        String[] doc = scanner.nextLine().split(" ");
 
-        Set<Section> libSections = new HashSet<Section>();
-
-        for(int i= 0; i < sec.length; i++){
-            int ok=0;
-            for(Section s: library.getSectionSet()){
-                if(s.getName().equals(sec[i])){
-                    libSections.add(s);
-                    ok = 1;
-                }
-            }
-            if(ok == 0){
-                System.out.println("Section does not exist in our library, please enter address for new section");
-                String address = scanner.nextLine();
-                Section section = new Section(sec[i],address);
-                libSections.add(section);
-            }
-
-        }
-
-//        Librarian librarian = new Librarian(doc[0], doc[1], librarians.size()+1, libSections);
-//        librarians.add(librarian);
-//        System.out.println("Librarian added successfully");
+        Librarian librarian = new Librarian(doc[0], doc[1]);
+        librarians.add(librarian);
+        System.out.println("Librarian hired successfully");
     }
 
     public double collectPenaltyFines(){

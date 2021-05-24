@@ -1,9 +1,8 @@
-package main.domain;
+package domain;
 
-import java.util.Arrays;
 import java.util.Set;
 
-public class Section extends Entity<Integer>{
+public class Section extends Entity<Integer> {
 
     private String name, location;
     private static int sectionId = 0;
@@ -62,7 +61,8 @@ public class Section extends Entity<Integer>{
         return "Section{" +
                 " name='" + name + '\'' +
                 ", location='" + location + '\'' +
-                "librarianSet = " + librarianSet +
+                " librarianSet = " + librarianSet +
+                " bookSet = " + bookSet +
                 '}';
     }
 }

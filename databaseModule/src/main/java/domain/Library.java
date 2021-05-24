@@ -1,6 +1,5 @@
-package main.domain;
+package domain;
 
-import java.util.List;
 import java.util.Set;
 
 public class Library extends Entity<Integer> {

@@ -2,35 +2,31 @@ package main.domain;
 
 public class BookItem extends Book{
 
-    private int bookItemId;
+
     private String status; // available, borrowed
+    private static int bookItemId = 0;
 
     public BookItem(){
-
+        bookItemId++;
+        this.setId(bookItemId);
     }
-    public BookItem(int bookItemId, String status) {
-        this.bookItemId = bookItemId;
+    public BookItem( String status) {
         this.status = status;
+        bookItemId++;
+        this.setId(bookItemId);
     }
 
-    public BookItem(int bookId, int pages, int length, int width, int releaseYear, double price, String title, String publishingHouse, String category, String description, String subject, Author author, int bookItemId, String status) {
-        super(bookId, pages, length, width, releaseYear, price, title, publishingHouse, category, description, subject, author);
-        this.bookItemId = bookItemId;
+    public BookItem( int pages, int length, int width, int releaseYear, double price, String title, String publishingHouse, String category, String description, String subject, Author author,String status) {
+        super(pages, length, width, releaseYear, price, title, publishingHouse, category, description, subject, author);
         this.status = status;
+        bookItemId++;
+        this.setId(bookItemId);
     }
 
-    public int getBookItemId() {
-        return bookItemId;
-    }
-
-    public void setBookItemId(int bookItemId) {
-        this.bookItemId = bookItemId;
-    }
 
     public String getStatus() {
         return status;
     }
-
     public void setStatus(String status) {
         this.status = status;
     }

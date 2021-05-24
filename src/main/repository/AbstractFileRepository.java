@@ -21,6 +21,7 @@ public abstract class AbstractFileRepository<ID, E extends Entity<ID>> extends I
     protected Repository<Integer, Audit> auditRepository;
     protected Repository<Integer, BookItem> bookItemRepository;
     protected Repository<Integer, Librarian> librarianRepository;
+    protected Repository<Integer, Book> bookRepository;
 
 
     public AbstractFileRepository(String fileName) {
@@ -52,10 +53,24 @@ public abstract class AbstractFileRepository<ID, E extends Entity<ID>> extends I
         this.auditRepository = auditRepository;
         loadData();
     }
+    public AbstractFileRepository(String fileName, Repository<Integer, Librarian> librarianRepository, Repository<Integer, Audit> auditRepository,
+                                 Repository<Integer, Book> bookRepository){
+        this.fileName = fileName;
+        this.librarianRepository = librarianRepository;
+        this.bookRepository = bookRepository;
+        this.auditRepository = auditRepository;
+        loadData();
+    }
 
     public AbstractFileRepository(Repository<Integer, Audit> auditRepository, String fileName) {
         this.auditRepository = auditRepository;
         this.fileName = fileName;
+        loadData();
+    }
+    public AbstractFileRepository(Repository<Integer, Book> bookRepository,  Repository<Integer, Audit> auditRepository, String fileName) {
+        this.auditRepository = auditRepository;
+        this.fileName = fileName;
+        this.bookRepository = bookRepository;
         loadData();
     }
 
@@ -136,27 +151,28 @@ public abstract class AbstractFileRepository<ID, E extends Entity<ID>> extends I
         String timeStamp = date.toString();
 
         if(entity instanceof Client){
-            action = "Writing object of type CLIENT/ ";
+            action = "Writing object of type CLIENT";
             Audit audit = new Audit(action,timeStamp);
-            audit.setId((Integer) entity.getId());
             auditRepository.save(audit);
         }
         else if (entity instanceof Rent){
-            action = "Writing object of type RENT/ ";
+            action = "Writing object of type RENT";
             Audit audit = new Audit(action,timeStamp);
-            audit.setId((Integer) entity.getId());
             auditRepository.save(audit);
         }
         else if(entity instanceof Librarian){
-            action = "Writing object of type LIBRARIAN/ ";
+            action = "Writing object of type LIBRARIAN";
             Audit audit = new Audit(action,timeStamp);
-            audit.setId((Integer) entity.getId());
             auditRepository.save(audit);
         }
         else if(entity instanceof Section){
-            action = "Writing object of type SECTION/ ";
+            action = "Writing object of type SECTION";
             Audit audit = new Audit(action,timeStamp);
-            audit.setId((Integer) entity.getId());
+            auditRepository.save(audit);
+        }
+        else if(entity instanceof LibraryCard){
+            action = "Writing object of type LIBRARYCARD";
+            Audit audit = new Audit(action,timeStamp);
             auditRepository.save(audit);
         }
 

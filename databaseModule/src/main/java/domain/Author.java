@@ -1,10 +1,11 @@
-package main.domain;
-import java.util.Arrays;
+package domain;
+
+import java.util.HashSet;
 import java.util.Set;
 
-public class Author extends Person{
+public class Author extends Person {
 
-    private Set<Book> bookArray;
+    private Set<Book> bookArray = new HashSet<>();
     private static int authorId = 0;
 
     public  Author(){
@@ -27,5 +28,17 @@ public class Author extends Person{
 
     public void setBookArray(Set<Book> bookArray) {
         this.bookArray = bookArray;
+    }
+
+    public void addBook(Book book){
+        bookArray.add(book);
+    }
+    @Override
+    public String toString() {
+        return "Author{" +
+                "firstName='" + getFirstName()+ '\'' +
+                ", lastName='" + getLastName() + '\'' +
+                ", books = " + getBookArray() +
+                '}';
     }
 }

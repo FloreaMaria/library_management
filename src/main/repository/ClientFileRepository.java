@@ -34,7 +34,6 @@ public class ClientFileRepository extends AbstractFileRepository<Integer, Client
         });
 
         Client client =  new Client();
-        client.setId(idClient);
         client.setFirstName(firstName);
         client.setLastName(lastName);
         client.setAddress(address);
@@ -48,15 +47,12 @@ public class ClientFileRepository extends AbstractFileRepository<Integer, Client
     protected String createEntityAsString(Client entity) {
 
         StringBuilder rentedBooksIds = new StringBuilder();
-        System.out.println(entity);
-
         for (Rent b : entity.getRentedBooks()) {
-           // System.out.println(b);
             rentedBooksIds.append(b.getId()).append(";");
         }
         rentedBooksIds.deleteCharAt(rentedBooksIds.length()-1);
         return entity.getId() + "," + entity.getFirstName() + "," + entity.getLastName() + "," + entity.getAddress()
-                + "," + entity.getLibraryCard().getCardId() + "," + rentedBooksIds;
+                + "," + entity.getLibraryCard().getId() + "," + rentedBooksIds;
 
     }
 }

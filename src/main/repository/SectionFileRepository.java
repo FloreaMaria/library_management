@@ -10,8 +10,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class SectionFileRepository extends AbstractFileRepository<Integer, Section>{
 
-    public SectionFileRepository(String fileName, Repository<Integer, Librarian> librarianRepository, Repository<Integer, Audit> auditRepository){
-        super(librarianRepository, fileName, auditRepository);
+    public SectionFileRepository(String fileName, Repository<Integer, Librarian> librarianRepository, Repository<Integer, Audit> auditRepository,
+                                 Repository<Integer, Book> bookRepository){
+        super(fileName, librarianRepository, auditRepository, bookRepository);
     }
 
     @Override
@@ -20,6 +21,7 @@ public class SectionFileRepository extends AbstractFileRepository<Integer, Secti
         String name = attributes.get(1);
         String location = attributes.get(2);
         Set<Librarian> librarianSet = new HashSet<>();
+        Set<Book> bookSet = new HashSet<>();
 
         Arrays.stream(attributes.get(3).split(";")).forEach((idLibrarian) ->{
             int idLibrarianInt = Integer.parseInt(idLibrarian);
@@ -27,10 +29,14 @@ public class SectionFileRepository extends AbstractFileRepository<Integer, Secti
             librarianSet.add(librarian);
 
         });
+        Arrays.stream(attributes.get(4).split(";")).forEach((idBook)->{
+            int idBookInt = Integer.parseInt(idBook);
+            Book book  = bookRepository.findOne(idBookInt);
+            bookSet.add(book);
+        });
 
-        Section section =  new Section(name, location);
+        Section section =  new Section(name, location, bookSet, librarianSet);
         section.setId(idSection);
-        section.setLibrarianSet(librarianSet);
         return section;
     }
 
@@ -38,10 +44,17 @@ public class SectionFileRepository extends AbstractFileRepository<Integer, Secti
     protected String createEntityAsString(Section entity) {
         StringBuilder librarianIds = new StringBuilder();
 
+
         for (Librarian l : entity.getLibrarianSet()) {
             librarianIds.append(l.getId()).append(";");
         }
         librarianIds.deleteCharAt(librarianIds.length()-1);
-        return entity.getId() + "," + entity.getName() + "," + entity.getLocation() + "," + librarianIds;
+
+        StringBuilder booksIds = new StringBuilder();
+        for (Book b : entity.getBookSet()) {
+            booksIds.append(b.getId()).append(";");
+        }
+        booksIds.deleteCharAt(booksIds.length()-1);
+        return entity.getId() + "," + entity.getName() + "," + entity.getLocation() + "," + librarianIds + "," + booksIds;
     }
 }

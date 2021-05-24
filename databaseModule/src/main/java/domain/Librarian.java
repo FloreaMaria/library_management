@@ -1,10 +1,8 @@
-package main.domain;
+package domain;
 
 import java.time.LocalDate;
-import java.util.Arrays;
-import java.util.Set;
 
-public class Librarian extends Person{
+public class Librarian extends Person {
 
     private static int librarianId = 0;
     private LocalDate hireDate;
@@ -33,9 +31,9 @@ public class Librarian extends Person{
     @Override
     public String toString() {
         return "Librarian{" +
-                "First name = " + getFirstName() +
-                ", Last name = " + getLastName() +
-                ", librarianId=" + getId() +
+                " librarianId = " + getId() +
+                ", FirstName = " + getFirstName() +
+                ", LastName = " + getLastName() +
                 '}';
     }
 }

@@ -1,9 +1,8 @@
-package main.domain;
+package domain;
 
 import java.util.Arrays;
-import java.util.Comparator;
 
-public class Client extends Person{
+public class Client extends Person {
 
     private String address;
     private LibraryCard libraryCard;
@@ -69,7 +68,7 @@ public class Client extends Person{
     @Override
     public String toString() {
         return "Client{" +
-                "clientId=" + getId() +
+                " clientId=" + getId() +
                 ", firstName=" + getFirstName() +
                 ", lastName=" + getLastName() +
                 ", address='" + address + '\'' +
