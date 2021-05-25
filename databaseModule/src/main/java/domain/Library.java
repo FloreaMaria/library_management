@@ -7,7 +7,9 @@ public class Library extends Entity<Integer> {
     private static int libraryId = 0;
     private String libraryName, libraryAddress;
 //    private List<BookItem> books;
-//    private Set<Librarian> librarianSet;
+////    private Set<Librarian> librarianSet;
+
+    private Set<Client> clientSet;
     private Set<Section> sectionSet;
 
     public Library(){
@@ -16,12 +18,11 @@ public class Library extends Entity<Integer> {
 
     }
 
-    public Library(String libraryName, String libraryAddress, Set<Section> sectionSet) {
+    public Library(String libraryName, String libraryAddress, Set<Section> sectionSet, Set<Client> clients) {
         this.libraryName = libraryName;
         this.libraryAddress = libraryAddress;
-//        this.books = books;
-//        this.librarianSet = librarianSet;
         this.sectionSet = sectionSet;
+        this.clientSet  = clients;
         libraryId++;
         this.setId(libraryId);
     }
@@ -42,21 +43,14 @@ public class Library extends Entity<Integer> {
         this.libraryAddress = libraryAddress;
     }
 
-//    public List<BookItem> getBooks() {
-//        return books;
-//    }
-//
-//    public void setBooks(List<BookItem> books) {
-//        this.books = books;
-//    }
 
-//    public Set<Librarian> getLibrarianSet() {
-//        return librarianSet;
-//    }
-//
-//    public void setLibrarianSet(Set<Librarian> librarianSet) {
-//        this.librarianSet = librarianSet;
-//    }
+    public Set<Client> getClientSet() {
+        return clientSet;
+    }
+
+    public void setClientSet(Set<Client> clientSet) {
+        this.clientSet = clientSet;
+    }
 
     public Set<Section> getSectionSet() {
         return sectionSet;

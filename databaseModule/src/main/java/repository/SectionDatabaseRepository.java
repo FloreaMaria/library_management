@@ -38,17 +38,36 @@ public class SectionDatabaseRepository implements Repository<Integer, Section> {
 
     @Override
     public HashMap<Integer, Section> findAll() {
-        return null;
+        HashMap<Integer, Section> sectionHashMap = new HashMap<>();
+        String query = "SELECT * FROM sections";
+        try(Connection connection = DriverManager.getConnection(DATABASE_PATH, USER, PASS)){
+            try(PreparedStatement statement = connection.prepareStatement(query)){
+                try(ResultSet set = statement.executeQuery()){
+                    while(set.next()){
+                        Section section = map(set);
+                        sectionHashMap.put(section.getId(), section);
+                    }
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return sectionHashMap;
     }
 
     @Override
     public Section save(Section entity) {
-        String query = "INSERT INTO sections (name, location) VALUES (?, ?) RETURNING *";
+        return null;
+    }
+
+    public Section saveSection(Section entity, int library_id) {
+        String query = "INSERT INTO sections (name, location, library_id) VALUES (?, ?, ?) RETURNING *";
 
         try(Connection connection = DriverManager.getConnection(DATABASE_PATH, USER, PASS)){
             try(PreparedStatement statement = connection.prepareStatement(query)){
                 statement.setString(1, entity.getName());
                 statement.setString(2, entity.getLocation());
+                statement.setInt(3, library_id);
                 try(ResultSet set = statement.executeQuery()){
                     if(set.next()){
                         return map(set);

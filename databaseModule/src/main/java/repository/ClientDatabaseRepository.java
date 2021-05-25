@@ -52,13 +52,19 @@ public class ClientDatabaseRepository implements Repository<Integer, Client>{
 
     @Override
     public Client save(Client entity) {
-        String query = "INSERT INTO clients (first_name, last_name, address, library_card_id) VALUES (?, ?, ?, ?) RETURNING *";
+        return null;
+    }
+
+    public Client saveClient(Client entity, int id_library) {
+        String query = "INSERT INTO clients (first_name, last_name, address, library_card_id, library_id" +
+                ") VALUES (?, ?, ?, ?, ?) RETURNING *";
         try(Connection connection = DriverManager.getConnection(DATABASE_PATH, USER, PASS)){
             try(PreparedStatement statement = connection.prepareStatement(query)){
                 statement.setString(1, entity.getFirstName());
                 statement.setString(2, entity.getLastName());
                 statement.setString(3, entity.getAddress());
                 statement.setInt(4, entity.getLibraryCard().getId());
+                statement.setInt(5, id_library);
                 try(ResultSet set = statement.executeQuery()){
                     if(set.next()){
                         return map(set);
@@ -132,4 +138,46 @@ public class ClientDatabaseRepository implements Repository<Integer, Client>{
         client.setRentedBooks(rents);
         return client;
     }
+
+    public HashMap<Integer,Client> findClientByFirstName(String first_name){
+
+        HashMap<Integer, Client> clientHashMap = new HashMap<>();
+        String query = "SELECT * FROM clients WHERE first_name = ?";
+        try(Connection connection = DriverManager.getConnection(DATABASE_PATH, USER, PASS)){
+            try(PreparedStatement statement = connection.prepareStatement(query)){
+                statement.setString(1, first_name);
+                try(ResultSet set = statement.executeQuery()){
+
+                    while(set.next()){
+                        Client client = map(set);
+                        clientHashMap.put(client.getId(), client);
+                    }
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return clientHashMap;
+    }
+    public HashMap<Integer,Client> findClientByLastName(String last_name){
+
+        HashMap<Integer, Client> clientHashMap = new HashMap<>();
+        String query = "SELECT * FROM clients WHERE last_name = ?";
+        try(Connection connection = DriverManager.getConnection(DATABASE_PATH, USER, PASS)){
+            try(PreparedStatement statement = connection.prepareStatement(query)){
+                statement.setString(1, last_name);
+                try(ResultSet set = statement.executeQuery()){
+
+                    while(set.next()){
+                        Client client = map(set);
+                        clientHashMap.put(client.getId(), client);
+                    }
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return clientHashMap;
+    }
+
 }

@@ -120,12 +120,17 @@ public class Main {
 
        // rentDatabaseRepository.saveRent(rent, 1);
 
+//        LibraryCardDatabaseRepository libraryCardDatabaseRepository = new LibraryCardDatabaseRepository();
+//        ClientDatabaseRepository clientDatabaseRepository = new ClientDatabaseRepository();
+//        Client client = clientDatabaseRepository.findOne(5);
+//        client.setFirstName("Ioana");
+//
+//        client.setLibraryCard(libraryCardDatabaseRepository.findOne(1));
+//        clientDatabaseRepository.saveClient(client, 1);
+//        System.out.println(clientDatabaseRepository.findClientByFirstName("Ioana"));
+//        System.out.println(sectionDatabaseRepository.findAll());
 
-        ClientDatabaseRepository clientDatabaseRepository = new ClientDatabaseRepository();
-        Client client = clientDatabaseRepository.findOne(1);
-        client.setFirstName("Ioana");
-        clientDatabaseRepository.update(client);
-        System.out.println(clientDatabaseRepository.findAll());
+        // TODO: 25.05.2021 returneaza cartea, imprumuta cartea, creeaza client,...
 
     }
 }
