@@ -60,30 +60,6 @@ public class LibrarianDatabaseRepository implements Repository<Integer, Libraria
         return null;
     }
 
-
-    public Librarian saveLibrarian(Librarian entity, int sectionId) {
-        String query = "INSERT INTO librarians (first_name, last_name, hire_date, id_section) VALUES (?, ?, ?, ?) RETURNING *";
-
-        try(Connection connection = DriverManager.getConnection(DATABASE_PATH, USER, PASS)){
-            try(PreparedStatement statement = connection.prepareStatement(query)){
-                statement.setString(1, entity.getFirstName());
-                statement.setString(2, entity.getLastName());
-                statement.setString(3, entity.getHireDate().toString());
-                statement.setInt(4, sectionId
-                );
-                try(ResultSet set = statement.executeQuery()){
-                    if(set.next()){
-                        return map(set);
-                    }
-                }
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        return null;
-    }
-
     @Override
     public Librarian delete(Integer integer) {
         String query = "DELETE FROM librarians WHERE id = ? RETURNING *";
@@ -124,6 +100,7 @@ public class LibrarianDatabaseRepository implements Repository<Integer, Libraria
         return null;
     }
 
+
     private Librarian map(ResultSet resultSet) throws SQLException {
 
         String firstName = resultSet.getString("first_name");
@@ -137,7 +114,28 @@ public class LibrarianDatabaseRepository implements Repository<Integer, Libraria
         librarian.setHireDate(hireDate);
         return librarian;
     }
+    public Librarian saveLibrarian(Librarian entity, int sectionId) {
+        String query = "INSERT INTO librarians (first_name, last_name, hire_date, id_section) VALUES (?, ?, ?, ?) RETURNING *";
 
+        try(Connection connection = DriverManager.getConnection(DATABASE_PATH, USER, PASS)){
+            try(PreparedStatement statement = connection.prepareStatement(query)){
+                statement.setString(1, entity.getFirstName());
+                statement.setString(2, entity.getLastName());
+                statement.setString(3, entity.getHireDate().toString());
+                statement.setInt(4, sectionId
+                );
+                try(ResultSet set = statement.executeQuery()){
+                    if(set.next()){
+                        return map(set);
+                    }
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
+        return null;
+    }
     public Set<Librarian> getLibrarians(int section_id){
 
         Set<Librarian> librarianSet = new HashSet<>();

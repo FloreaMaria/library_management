@@ -5,6 +5,9 @@ import domain.*;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
 
 public class ClientDatabaseRepository implements Repository<Integer, Client>{
     private static final String DATABASE_PATH = "jdbc:postgresql://localhost:5432/my_database";
@@ -55,29 +58,6 @@ public class ClientDatabaseRepository implements Repository<Integer, Client>{
         return null;
     }
 
-    public Client saveClient(Client entity, int id_library) {
-        String query = "INSERT INTO clients (first_name, last_name, address, library_card_id, library_id" +
-                ") VALUES (?, ?, ?, ?, ?) RETURNING *";
-        try(Connection connection = DriverManager.getConnection(DATABASE_PATH, USER, PASS)){
-            try(PreparedStatement statement = connection.prepareStatement(query)){
-                statement.setString(1, entity.getFirstName());
-                statement.setString(2, entity.getLastName());
-                statement.setString(3, entity.getAddress());
-                statement.setInt(4, entity.getLibraryCard().getId());
-                statement.setInt(5, id_library);
-                try(ResultSet set = statement.executeQuery()){
-                    if(set.next()){
-                        return map(set);
-                    }
-                }
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        return null;
-    }
-
     @Override
     public Client delete(Integer integer) {
         String query = "DELETE FROM clients WHERE id = ? RETURNING *";
@@ -118,6 +98,8 @@ public class ClientDatabaseRepository implements Repository<Integer, Client>{
         }
         return null;
     }
+
+
     private Client map(ResultSet resultSet) throws SQLException {
 
         String firstName = resultSet.getString("first_name");
@@ -138,46 +120,86 @@ public class ClientDatabaseRepository implements Repository<Integer, Client>{
         client.setRentedBooks(rents);
         return client;
     }
-
-    public HashMap<Integer,Client> findClientByFirstName(String first_name){
-
-        HashMap<Integer, Client> clientHashMap = new HashMap<>();
-        String query = "SELECT * FROM clients WHERE first_name = ?";
+    public Client saveClient(Client entity, int id_library) {
+        String query = "INSERT INTO clients (first_name, last_name, address, library_card_id, library_id" +
+                ") VALUES (?, ?, ?, ?, ?) RETURNING *";
         try(Connection connection = DriverManager.getConnection(DATABASE_PATH, USER, PASS)){
             try(PreparedStatement statement = connection.prepareStatement(query)){
-                statement.setString(1, first_name);
+                statement.setString(1, entity.getFirstName());
+                statement.setString(2, entity.getLastName());
+                statement.setString(3, entity.getAddress());
+                statement.setInt(4, entity.getLibraryCard().getId());
+                statement.setInt(5, id_library);
                 try(ResultSet set = statement.executeQuery()){
-
-                    while(set.next()){
-                        Client client = map(set);
-                        clientHashMap.put(client.getId(), client);
+                    if(set.next()){
+                        return map(set);
                     }
                 }
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return clientHashMap;
-    }
-    public HashMap<Integer,Client> findClientByLastName(String last_name){
 
-        HashMap<Integer, Client> clientHashMap = new HashMap<>();
-        String query = "SELECT * FROM clients WHERE last_name = ?";
+        return null;
+    }
+
+    public Set<Client> findClientByFirstName(String first_name){
+
+        Set<Client> clientHashSet = new HashSet<>();
+        String query = "SELECT * FROM clients WHERE UPPER(first_name) = ?";
         try(Connection connection = DriverManager.getConnection(DATABASE_PATH, USER, PASS)){
             try(PreparedStatement statement = connection.prepareStatement(query)){
-                statement.setString(1, last_name);
+                statement.setString(1, first_name.toUpperCase(Locale.ROOT));
                 try(ResultSet set = statement.executeQuery()){
 
                     while(set.next()){
                         Client client = map(set);
-                        clientHashMap.put(client.getId(), client);
+                        clientHashSet.add(client);
                     }
                 }
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return clientHashMap;
+        return clientHashSet;
     }
+    public Set<Client> findClientByLastName(String last_name){
 
+        Set<Client> clientHashSet = new HashSet<>();
+        String query = "SELECT * FROM clients WHERE UPPER(last_name) = ?";
+        try(Connection connection = DriverManager.getConnection(DATABASE_PATH, USER, PASS)){
+            try(PreparedStatement statement = connection.prepareStatement(query)){
+                statement.setString(1, last_name.toUpperCase(Locale.ROOT));
+                try(ResultSet set = statement.executeQuery()){
+
+                    while(set.next()){
+                        Client client = map(set);
+                        clientHashSet.add(client);
+                    }
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return clientHashSet;
+    }
+    public Set<Client> findClientsOfLibrary(int library_id){
+        Set<Client> clientSet = new HashSet<>();
+        String query = "SELECT * FROM clients WHERE library_id = ?";
+        try(Connection connection = DriverManager.getConnection(DATABASE_PATH, USER, PASS)){
+            try(PreparedStatement statement = connection.prepareStatement(query)){
+                statement.setInt(1, library_id);
+                try(ResultSet set = statement.executeQuery()){
+
+                    while(set.next()){
+                        Client client = map(set);
+                        clientSet.add(client);
+                    }
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return clientSet;
+    }
 }

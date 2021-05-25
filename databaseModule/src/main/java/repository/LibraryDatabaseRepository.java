@@ -1,8 +1,8 @@
 package repository;
 
 import domain.Author;
-import domain.Book;
-import domain.Librarian;
+import domain.Client;
+import domain.Library;
 import domain.Section;
 
 import java.sql.*;
@@ -10,17 +10,17 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
-public class SectionDatabaseRepository implements Repository<Integer, Section> {
+public class LibraryDatabaseRepository implements Repository<Integer, Library>{
 
     private static final String DATABASE_PATH = "jdbc:postgresql://localhost:5432/my_database";
     private static final String USER = "postgres";
     private static final String PASS = "admin";
-    LibrarianDatabaseRepository librarianDatabaseRepository = new LibrarianDatabaseRepository();
-    BookDatabaseRepository bookDatabaseRepository = new BookDatabaseRepository();
+    ClientDatabaseRepository clientDatabaseRepository = new ClientDatabaseRepository();
+    SectionDatabaseRepository sectionDatabaseRepository =  new SectionDatabaseRepository();
 
     @Override
-    public Section findOne(Integer integer) {
-        String query = "SELECT * FROM sections WHERE id = ?";
+    public Library findOne(Integer integer) {
+        String query = "SELECT * FROM libraries WHERE id = ?";
         try(Connection connection = DriverManager.getConnection(DATABASE_PATH, USER, PASS)){
             try(PreparedStatement statement = connection.prepareStatement(query)){
                 statement.setInt(1, integer);
@@ -37,37 +37,33 @@ public class SectionDatabaseRepository implements Repository<Integer, Section> {
     }
 
     @Override
-    public HashMap<Integer, Section> findAll() {
-        HashMap<Integer, Section> sectionHashMap = new HashMap<>();
-        String query = "SELECT * FROM sections";
+    public HashMap<Integer, Library> findAll() {
+        HashMap<Integer, Library> libraryHashMap= new HashMap<>();
+        String query = "SELECT * FROM libraries ";
         try(Connection connection = DriverManager.getConnection(DATABASE_PATH, USER, PASS)){
             try(PreparedStatement statement = connection.prepareStatement(query)){
                 try(ResultSet set = statement.executeQuery()){
                     while(set.next()){
-                        Section section = map(set);
-                        sectionHashMap.put(section.getId(), section);
+                        Library library = map(set);
+                        libraryHashMap.put(library.getId(), library);
                     }
                 }
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return sectionHashMap;
+        return libraryHashMap;
     }
 
     @Override
-    public Section save(Section entity) {
-        return null;
-    }
-
-    public Section saveSection(Section entity, int library_id) {
-        String query = "INSERT INTO sections (name, location, library_id) VALUES (?, ?, ?) RETURNING *";
+    public Library save(Library entity) {
+        String query = "INSERT INTO libraries" +
+                " (name, address) VALUES (?, ?) RETURNING *";
 
         try(Connection connection = DriverManager.getConnection(DATABASE_PATH, USER, PASS)){
             try(PreparedStatement statement = connection.prepareStatement(query)){
-                statement.setString(1, entity.getName());
-                statement.setString(2, entity.getLocation());
-                statement.setInt(3, library_id);
+                statement.setString(1, entity.getLibraryName());
+                statement.setString(2, entity.getLibraryAddress());
                 try(ResultSet set = statement.executeQuery()){
                     if(set.next()){
                         return map(set);
@@ -77,12 +73,13 @@ public class SectionDatabaseRepository implements Repository<Integer, Section> {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
+
         return null;
     }
 
     @Override
-    public Section delete(Integer integer) {
-        String query = "DELETE FROM sections WHERE id = ? RETURNING *";
+    public Library delete(Integer integer) {
+        String query = "DELETE FROM libraries WHERE id = ? RETURNING *";
         try(Connection connection = DriverManager.getConnection(DATABASE_PATH, USER, PASS)){
             try(PreparedStatement statement = connection.prepareStatement(query)){
                 statement.setInt(1, integer);
@@ -99,14 +96,13 @@ public class SectionDatabaseRepository implements Repository<Integer, Section> {
     }
 
     @Override
-    public Section update(Section entity) {
-        String query = "UPDATE sections set name = ?, location = ? WHERE id = ? RETURNING *";
+    public Library update(Library entity) {
+        String query = "UPDATE libraries set name = ?, address = ? WHERE id = ? RETURNING *";
         try(Connection connection = DriverManager.getConnection(DATABASE_PATH, USER, PASS)){
             try(PreparedStatement statement = connection.prepareStatement(query)){
-                statement.setString(1, entity.getName());
-                statement.setString(2, entity.getLocation());
+                statement.setString(1, entity.getLibraryName());
+                statement.setString(2, entity.getLibraryAddress());
                 statement.setInt(3, entity.getId());
-
                 try(ResultSet set = statement.executeQuery()){
                     if(set.next()){
                         return map(set);
@@ -119,40 +115,21 @@ public class SectionDatabaseRepository implements Repository<Integer, Section> {
         return null;
     }
 
-    private Section map(ResultSet resultSet) throws SQLException {
+    private Library map(ResultSet resultSet) throws SQLException {
 
         String name = resultSet.getString("name");
-        String location = resultSet.getString("location");
-        Integer id = resultSet.getInt("id");
-        Section section =  new Section();
-        section.setId(id);
-        section.setName(name);
-        section.setLocation(location);
+        String address = resultSet.getString("address");
+        int id = resultSet.getInt("id");
 
-        Set<Librarian> librarianSet = librarianDatabaseRepository.getLibrarians(id);
-        section.setLibrarianSet(librarianSet);
+        Library library =  new Library();
+        library.setId(id);
+        library.setLibraryName(name);
+        library.setLibraryAddress(address);
+        Set<Client> clients = clientDatabaseRepository.findClientsOfLibrary(id);
+        Set<Section> sections = sectionDatabaseRepository.findSectionsOfLibrary(id);
+        library.setSectionSet(sections);
+        library.setClientSet(clients);
 
-        Set<Book> bookSet = bookDatabaseRepository.getSectionBooks(id);
-        section.setBookSet(bookSet);
-        return section;
-
-    }
-    public Set< Section> findSectionsOfLibrary(int library_id) {
-        Set<Section> sectionHashMap = new HashSet<>();
-        String query = "SELECT * FROM sections where library_id = ?";
-        try(Connection connection = DriverManager.getConnection(DATABASE_PATH, USER, PASS)){
-            try(PreparedStatement statement = connection.prepareStatement(query)){
-                statement.setInt(1, library_id);
-                try(ResultSet set = statement.executeQuery()){
-                    while(set.next()){
-                        Section section = map(set);
-                        sectionHashMap.add(section);
-                    }
-                }
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return sectionHashMap;
+        return library;
     }
 }

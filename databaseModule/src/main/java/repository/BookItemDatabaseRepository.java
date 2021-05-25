@@ -54,9 +54,9 @@ public class BookItemDatabaseRepository implements Repository<Integer, BookItem>
     @Override
     public BookItem save(BookItem entity) {
 
-        String query = "INSERT INTO books (status, pages, length, width, release_year, price, " +
+        String query = "INSERT INTO books (status, pages, length, width, release_year, " +
                 "title,publishing_house, category, description, subject, id_author) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING *";
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?) RETURNING *";
 
         try(Connection connection = DriverManager.getConnection(DATABASE_PATH, USER, PASS)){
             try(PreparedStatement statement = connection.prepareStatement(query)){
@@ -65,13 +65,12 @@ public class BookItemDatabaseRepository implements Repository<Integer, BookItem>
                 statement.setInt(3, entity.getLength());
                 statement.setInt(4, entity.getWidth());
                 statement.setInt(5, entity.getReleaseYear());
-                statement.setDouble(6, entity.getPrice());
-                statement.setString(7, entity.getTitle());
-                statement.setString(8, entity.getPublishingHouse());
-                statement.setString(9, entity.getCategory());
-                statement.setString(10, entity.getDescription());
-                statement.setString(11, entity.getSubject());
-                statement.setInt(12, entity.getAuthor().getId());
+                statement.setString(6, entity.getTitle());
+                statement.setString(7, entity.getPublishingHouse());
+                statement.setString(8, entity.getCategory());
+                statement.setString(9, entity.getDescription());
+                statement.setString(10, entity.getSubject());
+                statement.setInt(11, entity.getAuthor().getId());
                 try(ResultSet set = statement.executeQuery()){
                     if(set.next()){
                         return map2(set);
@@ -106,7 +105,7 @@ public class BookItemDatabaseRepository implements Repository<Integer, BookItem>
     @Override
     public BookItem update(BookItem entity) {
         String query = "UPDATE book_items set  status = ?, pages = ?, length = ?, width = ?, release_year = ?, " +
-                "price = ?, title = ?, publishing_house = ?, category = ?, description = ?, subject = ?, author_id = ?" +
+                "title = ?, publishing_house = ?, category = ?, description = ?, subject = ?, author_id = ?" +
                 " WHERE book_item_id = ? RETURNING *";
 
         try(Connection connection = DriverManager.getConnection(DATABASE_PATH, USER, PASS)){
@@ -116,14 +115,13 @@ public class BookItemDatabaseRepository implements Repository<Integer, BookItem>
                 statement.setInt(3, entity.getLength());
                 statement.setInt(4, entity.getWidth());
                 statement.setInt(5, entity.getReleaseYear());
-                statement.setDouble(6, entity.getPrice());
-                statement.setString(7, entity.getTitle());
-                statement.setString(8,entity.getPublishingHouse());
-                statement.setString(9, entity.getCategory());
-                statement.setString(10, entity.getDescription());
-                statement.setString(11, entity.getSubject());
-                statement.setInt(12, entity.getAuthor().getId());
-                statement.setInt(13, entity.getId());
+                statement.setString(6, entity.getTitle());
+                statement.setString(7,entity.getPublishingHouse());
+                statement.setString(8, entity.getCategory());
+                statement.setString(9, entity.getDescription());
+                statement.setString(10, entity.getSubject());
+                statement.setInt(11, entity.getAuthor().getId());
+                statement.setInt(12, entity.getId());
 
 
                 try(ResultSet set = statement.executeQuery()){
@@ -144,7 +142,6 @@ public class BookItemDatabaseRepository implements Repository<Integer, BookItem>
         Integer pages = resultSet.getInt("pages");
         Integer width = resultSet.getInt("width");
         Integer length = resultSet.getInt("length");
-        Float price = resultSet.getFloat("price");
         Integer releaseYear = resultSet.getInt("release_year");
         String title = resultSet.getString("title");
         String publishingHouse = resultSet.getString("publishing_house");
@@ -162,7 +159,7 @@ public class BookItemDatabaseRepository implements Repository<Integer, BookItem>
         author.setFirstName(firstName);
         author.setLastName(lastName);
 
-        BookItem book = new BookItem(pages, width, length, releaseYear, price, title, publishingHouse,
+        BookItem book = new BookItem(pages, width, length, releaseYear, title, publishingHouse,
                 category, description, subject, author, status);
         book.setId(idBook);
         return book;
@@ -175,7 +172,6 @@ public class BookItemDatabaseRepository implements Repository<Integer, BookItem>
         Integer pages = resultSet.getInt("pages");
         Integer width = resultSet.getInt("width");
         Integer length = resultSet.getInt("length");
-        Float price = resultSet.getFloat("price");
         Integer releaseYear = resultSet.getInt("release_year");
         String title = resultSet.getString("title");
         String publishingHouse = resultSet.getString("publishing_house");
@@ -187,7 +183,7 @@ public class BookItemDatabaseRepository implements Repository<Integer, BookItem>
         Integer idAuthor = resultSet.getInt("author_id");
 
         Author author = authorDatabaseRepository.findOne(idAuthor);
-        BookItem bookItem = new BookItem(pages, width, length, releaseYear, price, title, publishingHouse,
+        BookItem bookItem = new BookItem(pages, width, length, releaseYear, title, publishingHouse,
                 category, description, subject, author, status);
         bookItem.setId(idBook);
         return bookItem;

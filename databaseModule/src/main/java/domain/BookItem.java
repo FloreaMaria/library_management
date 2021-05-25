@@ -16,9 +16,9 @@ public class BookItem extends Book{
         this.setId(bookItemId);
     }
 
-    public BookItem(int pages, int length, int width, int releaseYear, double price, String title,
+    public BookItem(int pages, int length, int width, int releaseYear, String title,
                     String publishingHouse, String category, String description, String subject, Author author, String status) {
-        super(pages, length, width, releaseYear, price, title, publishingHouse, category, description, subject, author);
+        super(pages, length, width, releaseYear, title, publishingHouse, category, description, subject, author);
         this.status = status;
         bookItemId++;
         this.setId(bookItemId);
@@ -40,7 +40,6 @@ public class BookItem extends Book{
                 ", length=" + getLength() +
                 ", width=" + getWidth() +
                 ", releaseYear=" + getReleaseYear() +
-                ", price=" + getPrice() +
                 ", title='" + getTitle() + '\'' +
                 ", publishingHouse='" + getPublishingHouse() + '\'' +
                 ", category='" + getCategory() + '\'' +

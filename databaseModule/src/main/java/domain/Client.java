@@ -58,7 +58,7 @@ public class Client extends Person {
 
     public double calculatePenalty(){
         double penalties = 0;
-        for(Rent rent:rentedBooks) {
+        for(Rent rent : rentedBooks) {
             penalties += rent.getPenalty();
         }
         return penalties;
@@ -68,7 +68,7 @@ public class Client extends Person {
     @Override
     public String toString() {
         return "Client{" +
-                " clientId=" + getId() +
+                "clientId=" + getId() +
                 ", firstName=" + getFirstName() +
                 ", lastName=" + getLastName() +
                 ", address='" + address + '\'' +

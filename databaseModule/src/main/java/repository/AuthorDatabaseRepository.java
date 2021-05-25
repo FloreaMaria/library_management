@@ -2,6 +2,7 @@ package repository;
 
 import domain.Author;
 import domain.Book;
+import domain.Client;
 
 import java.sql.*;
 import java.util.*;
@@ -37,7 +38,7 @@ public class AuthorDatabaseRepository implements Repository<Integer, Author>{
     }
 
     @Override
-    public HashMap<Integer, Author> findAll() {
+     public HashMap<Integer, Author> findAll() {
         HashMap<Integer, Author> authorHashMap= new HashMap<>();
         String query = "SELECT *"+
                 " FROM authors a " +
@@ -165,7 +166,6 @@ public class AuthorDatabaseRepository implements Repository<Integer, Author>{
         int pages = resultSet.getInt("pages");
         int width = resultSet.getInt("width");
         int length = resultSet.getInt("length");
-        float price = resultSet.getFloat("price");
         int releaseYear = resultSet.getInt("release_year");
         String title = resultSet.getString("title");
         String publishingHouse = resultSet.getString("publishing_house");
@@ -173,8 +173,8 @@ public class AuthorDatabaseRepository implements Repository<Integer, Author>{
         String description = resultSet.getString("description");
         String subject = resultSet.getString("subject");
 
-        if(idBook >0){
-            Book book = new Book(pages, width, length, releaseYear, price, title, publishingHouse,
+        if(idBook > 0){
+            Book book = new Book(pages, width, length, releaseYear, title, publishingHouse,
                     category, description, subject, author);
             book.setId(idBook);
             author.addBook(book);
@@ -197,5 +197,23 @@ public class AuthorDatabaseRepository implements Repository<Integer, Author>{
 
         return  author;
     }
-
+    public Set<Author> findAuthorByName(String first_name, String last_name){
+        Set<Author> authorHashSet = new HashSet<>();
+        String query = "SELECT * FROM authors WHERE UPPER(last_name) = ? AND UPPER(first_name) = ?";
+        try(Connection connection = DriverManager.getConnection(DATABASE_PATH, USER, PASS)){
+            try(PreparedStatement statement = connection.prepareStatement(query)){
+                statement.setString(1, last_name.toUpperCase(Locale.ROOT));
+                statement.setString(2, first_name.toUpperCase(Locale.ROOT));
+                try(ResultSet set = statement.executeQuery()){
+                    while(set.next()){
+                        Author author = map(set);
+                        authorHashSet.add(author);
+                    }
+                }
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return authorHashSet;
+    }
 }

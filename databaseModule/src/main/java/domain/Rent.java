@@ -59,7 +59,7 @@ public class Rent extends Entity<Integer> {
     public void calculatePenalty(){
         LocalDate currentDate = LocalDate.now();
         if(this.actualReturnDate == null && this.getReturnDate().isBefore(currentDate))
-            this.penalty = ChronoUnit.DAYS.between(this.getRentDate(), currentDate) * (0.01 * bookItem.getPrice());
+            this.penalty = ChronoUnit.DAYS.between(this.getRentDate(), currentDate) * (0.05);
     }
 
     @Override

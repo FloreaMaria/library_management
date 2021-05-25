@@ -6,7 +6,6 @@ public class Book extends Entity<Integer> {
 
     private static int bookId = 0;
     private int pages, length, width, releaseYear;
-    private double price;
     private String title, publishingHouse, category, description, subject;
     private Author author;
 
@@ -15,7 +14,7 @@ public class Book extends Entity<Integer> {
         this.setId(bookId);
     }
 
-    public Book(int pages, int length, int width, int releaseYear, double price, String title, String publishingHouse,
+    public Book(int pages, int length, int width, int releaseYear, String title, String publishingHouse,
                 String category, String description, String subject, Author author) {
         bookId++;
         this.setId(bookId);
@@ -23,7 +22,6 @@ public class Book extends Entity<Integer> {
         this.length = length;
         this.width = width;
         this.releaseYear = releaseYear;
-        this.price = price;
         this.title = title;
         this.publishingHouse = publishingHouse;
         this.category = category;
@@ -63,14 +61,6 @@ public class Book extends Entity<Integer> {
 
     public void setReleaseYear(int releaseYear) {
         this.releaseYear = releaseYear;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
     public String getTitle() {
@@ -135,11 +125,6 @@ public class Book extends Entity<Integer> {
         }};
 
 
-    public double compare(Book a, Book b)
-    {
-        return a.price - b.price;
-    }
-
     @Override
     public String toString() {
         return "Book{" +
@@ -148,7 +133,6 @@ public class Book extends Entity<Integer> {
                 ", length=" + length +
                 ", width=" + width +
                 ", releaseYear=" + releaseYear +
-                ", price=" + price +
                 ", title='" + title + '\'' +
                 ", publishingHouse='" + publishingHouse + '\'' +
                 ", category='" + category + '\'' +

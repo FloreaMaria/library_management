@@ -117,6 +117,7 @@ public class MainService {
         }
         return foundClients;
     }
+
     public int getNumberOfPenalizedClients(){
         int nr = 0;
         for(Client c : clients){
