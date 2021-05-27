@@ -29,7 +29,7 @@
 ### Tables
 
 
-books||book_items||authors||clients||rents||librarians||sections||libraries||library_cards|
+ books||book_items||authors||clients||rents||librarians||sections||libraries||library_cards|
 ------------- || ------------- || ------------- || ------------- || ------------- || -------------
 book_id|(pk)|book_item_id|(pk)|author_id|(pk)|client_id|(pk)|rent_id|(pk)|librarian_id|(pk)|section_id|(pk)|library_id|(pk)|library_card_id|(pk)
 author_id|(fk)|author_id|(fk)|first_name|attr|library_id|(fk)|book_item_id|(fk)|section_id|(fk)|library_id|(fk)|name|attr|release_date|attr
