@@ -1,7 +1,6 @@
 
 ###CLASSES
 
--------
 
 ------
 
@@ -20,7 +19,7 @@
 - Service
 - Main
 
-<br>
+
 
 -------
 
@@ -28,7 +27,7 @@
 
 
 ###TABLES
-<br>
+
 
 books||book_items||authors||clients||rents||librarians||sections||libraries||library_cards|
 ------------- || ------------- || ------------- || ------------- || ------------- || -------------
@@ -44,7 +43,6 @@ publishing_house|attr|publishing_house|attr||||||||||||||
 category|attr|category|attr||||||||||||||
 description|attr|description|attr||||||||||||||
 
-<br>
 
 -----
 
@@ -64,6 +62,11 @@ description|attr|description|attr||||||||||||||
 - Find book from specific section
 - Find book by title
 - Search author by name/id
+
+
+
+
+
 
 
 
