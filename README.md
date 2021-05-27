@@ -26,22 +26,27 @@
 ----------
 
 
+
 ### Tables
 
 
- books||book_items||authors||clients||rents||librarians||sections||libraries||library_cards|
-------------- || ------------- || ------------- || ------------- || ------------- || -------------
-book_id|(pk)|book_item_id|(pk)|author_id|(pk)|client_id|(pk)|rent_id|(pk)|librarian_id|(pk)|section_id|(pk)|library_id|(pk)|library_card_id|(pk)
-author_id|(fk)|author_id|(fk)|first_name|attr|library_id|(fk)|book_item_id|(fk)|section_id|(fk)|library_id|(fk)|name|attr|release_date|attr
-section_id|(fk)|status|attr|last_name|attr|library_card_id|(fk)|client_id|(fk)|first_name|attr|name|attr|address|attr|expire_date|attr
-pages|attr|pages|attr|||first_name|attr|rent_date|attr|last_name|attr|location|attr||||
-length|attr|length|attr|||last_name|attr|actual_return_date|attr|hire_date|attr||||||
-width|attr|width|attr|||address|attr|penalty|attr||||||||
-release_year|attr|release_year|attr||||||||||||||
-title|attr|title|attr||||||||||||||
-publishing_house|attr|publishing_house|attr||||||||||||||
-category|attr|category|attr||||||||||||||
-description|attr|description|attr||||||||||||||
+<br>
+
+
+| books | book_items | authors | clients | rents | librarians | sections | libraries| library_cards|
+| :---: | :---: | :---: |:---: | :---: | :---: |:---: | :---: | :---: |
+| book_id(pk) | book_item_id(pk) | author_id(pk) |client_id(pk) | rent_id(pk)|librarian_id(pk)|section_id(pk)|library_id(pk)|library_card_id(pk)
+author_id(fk)|author_id(fk)|first_nameattr|library_id(fk)|book_item_id(fk)|section_id(fk)|library_id(fk)|name(attr)|release_date(attr)
+section_id(fk)|status(attr)|last_name(attr)|library_card_id(fk)|client_id(fk)|first_name(attr)|name(attr)|address(attr)|expire_date(attr)
+pages(attr)|pages(attr)||first_name(attr)|rent_date(attr)|last_name(attr)|location(attr)|||
+length(attr)|length(attr)||last_name(attr)|actual_return_date(attr)|hire_date(attr)||||
+width(attr)|width(attr)||address(attr)|penalty(attr)|||||
+release_year(attr)|release_year(attr)||||||||
+title(attr)|title(attr)||||||||
+publishing_house(attr)|publishing_house(attr)||||||||
+category(attr)|category(attr)||||||||
+description(attr)|description(attr)||||||||
+
 
 
 -----
