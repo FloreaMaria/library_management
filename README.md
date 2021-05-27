@@ -1,5 +1,5 @@
 
-###CLASSES
+### Classes
 
 
 ------
@@ -26,7 +26,7 @@
 ----------
 
 
-###TABLES
+### Tables
 
 
 books||book_items||authors||clients||rents||librarians||sections||libraries||library_cards|
