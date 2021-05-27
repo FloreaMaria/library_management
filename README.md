@@ -13,8 +13,10 @@
 - LibraryCard
 - Rent
 - Section
-- MainService
-- main
+- BookAuthorService
+- RentClientService
+- Service
+- Main
 -------
 
 ### Objects to create
@@ -30,25 +32,20 @@
 
 -------
 
-### Actions/Interogations
+### Actions/Interrogations
 
 
-- Create new library
-- Display all clients
-- Add new client
-- Search client by first name/ last name
+- Display all clients/books/authors
+- Cancel membership of client
+- Search client by first name/last name
 - Create new rent for client
 - Display clients who have penalties
-- Add a new book
-- Search book by author title/name/publishing house name
-- Display books ordered by price asc/desc
-- Display books ordered by title
-- Display authors
-- Add new author
-- Search books of an author
-- Display librarians
-- Add librarian
-- Get total sum to collect from penalties
-- Add new section of library
+- As a client, return a borrowed book 
+- Search book by author title/name/id
+- Display books ordered by title asc/desc
+- Find book from specific section
+- Find book by title
+- Search author by name/id
+
 
 
